@@ -13,29 +13,33 @@ class App < Roda
 
   route do |r|
     r.post 'check_in' do
-      body = JSON.parse(r.body.read).transform_keys(&:to_sym)
-      dry = Parka::CheckIn::Request.new(body)
-      response = Parka::CheckIn::Service.build.call(dry)
-      puts "db state: #{Parka::Db.instance.inspect}"
-      puts "*****"
+      begin
+        body = JSON.parse(r.body.read).map { |k,v| [k.to_sym, v] }.to_h
+        dry = Parka::CheckIn::Request.new(body)
+        response = Parka::CheckIn::Service.build.call(dry)
+        puts "db state: #{Parka::Db.instance.inspect}"
+        puts "*****"
 
-      { data: response.attributes }
-    rescue StandardError => e
-      puts "ERROR: #{e.message} | backtrace: #{e.backtrace}"
-      { error: e.message, backtrace: e.backtrace }
+        { data: response.attributes }
+      rescue StandardError => e
+        puts "ERROR: #{e.message} | backtrace: #{e.backtrace}"
+        { error: e.message, backtrace: e.backtrace }
+      end
     end
 
     r.post 'check_out' do
-      body = JSON.parse(r.body.read).transform_keys(&:to_sym)
-      dry = Parka::CheckOut::Request.new(body)
-      response = Parka::CheckOut::Service.build.call(dry)
-      puts "db state: #{Parka::Db.instance.inspect}"
-      puts "*****"
+      begin
+        body = JSON.parse(r.body.read).map { |k,v| [k.to_sym, v] }.to_h
+        dry = Parka::CheckOut::Request.new(body)
+        response = Parka::CheckOut::Service.build.call(dry)
+        puts "db state: #{Parka::Db.instance.inspect}"
+        puts "*****"
 
-      { data: response }
-    rescue StandardError => e
-      puts "ERROR: #{e.message} | backtrace: #{e.backtrace}"
-      { error: e.message, backtrace: e.backtrace }
+        { data: response }
+      rescue StandardError => e
+        puts "ERROR: #{e.message} | backtrace: #{e.backtrace}"
+        { error: e.message, backtrace: e.backtrace }
+      end
     end
   end
 end
