@@ -39,7 +39,6 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
-    redis (4.1.2)
     rerun (0.13.0)
       listen (~> 3.0)
     roda (3.23.0)
@@ -65,10 +64,9 @@ PLATFORMS
 DEPENDENCIES
   dry-struct
   dry-types
-  redis
   rerun
   roda
   rspec
 
 BUNDLED WITH
-   1.17.2
+   1.17.3
